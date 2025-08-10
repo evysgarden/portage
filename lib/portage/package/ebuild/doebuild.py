@@ -1256,7 +1256,7 @@ def doebuild(
         # in order to satisfy the sane $PWD requirement (from bug #239560)
         # when pkg_nofetch is spawned.
         have_build_dirs = False
-        if mydo not in ("digest", "fetch", "help", "manifest"):
+        if mydo not in ("digest", "fetch", "help", "manifest", "printenv"):
             if not returnpid and "PORTAGE_BUILDDIR_LOCKED" not in mysettings:
                 builddir_lock = EbuildBuildDir(
                     scheduler=asyncio._safe_loop(), settings=mysettings
@@ -1353,9 +1353,16 @@ def doebuild(
         mycpv = "/".join((mysettings["CATEGORY"], mysettings["PF"]))
 
         if mydo == "printenv":
+            src_uri = mysettings.configdict["pkg"].get("SRC_URI")
+            if src_uri is None:
+                (src_uri,) = mydbapi.aux_get(
+                    mysettings.mycpv,
+                    ["SRC_URI"],
+                    mytree=os.path.dirname(os.path.dirname(os.path.dirname(myebuild))),
+                )
             config = mysettings.configdict["pkg"]
             json.dump({
-                "SRC_URI": config.get("SRC_URI"),
+                "SRC_URI": src_uri,
                 "DESCRIPTION": config.get("DESCRIPTION"),
             }, sys.stdout, indent = 4)
 
