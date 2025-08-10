@@ -24,6 +24,7 @@ import time
 from typing import Union
 import warnings
 import zlib
+import json
 
 import portage
 
@@ -920,6 +921,7 @@ def doebuild(
         "unmerge",
         "manifest",
         "nofetch",
+        "printenv",
     ]
 
     if mydo not in validcommands:
@@ -1349,6 +1351,15 @@ def doebuild(
                 mysettings.pop("PORTAGE_UPDATE_ENV", None)
 
         mycpv = "/".join((mysettings["CATEGORY"], mysettings["PF"]))
+
+        if mydo == "printenv":
+            config = mysettings.configdict["pkg"]
+            json.dump({
+                "SRC_URI": config.get("SRC_URI"),
+                "DESCRIPTION": config.get("DESCRIPTION"),
+            }, sys.stdout, indent = 4)
+
+            return 0
 
         # Only try and fetch the files if we are going to need them ...
         # otherwise, if user has FEATURES=noauto and they run `ebuild clean
