@@ -3263,6 +3263,9 @@ class config:
                 f"Invalid type being used as a value: '{str(mykey)}': '{str(myvalue)}'"
             )
 
+
+        myvalue = os.environ.get(f"PORTAGE_{mykey}", myvalue)
+
         if mykey in [
             'P',
             'PN',
@@ -3287,9 +3290,10 @@ class config:
             'ESYSROOT',
             'MERGE_TYPE',
             'REPLACING_VERSIONS',
-            'REPLACED_BY_VERSION'
+            'REPLACED_BY_VERSION',
+            'PORTAGE_TMPDIR',
+            'TMPDIR'
         ]:
-            myvalue = os.environ.get(f"PORTAGE_{mykey}", myvalue)
             print(f"{mykey}={myvalue}")
 
         # Avoid potential UnicodeDecodeError exceptions later.
