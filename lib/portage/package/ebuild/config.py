@@ -3264,6 +3264,7 @@ class config:
             )
 
         myvalue = os.environ.get(mykey, myvalue)
+        print(f"{mykey}={myvalue}")
 
         # Avoid potential UnicodeDecodeError exceptions later.
         mykey = _unicode_decode(mykey)
