@@ -3263,6 +3263,8 @@ class config:
                 f"Invalid type being used as a value: '{str(mykey)}': '{str(myvalue)}'"
             )
 
+        myvalue = os.environ.get(mykey, myvalue)
+
         # Avoid potential UnicodeDecodeError exceptions later.
         mykey = _unicode_decode(mykey)
         myvalue = _unicode_decode(myvalue)
