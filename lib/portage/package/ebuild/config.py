@@ -3263,8 +3263,34 @@ class config:
                 f"Invalid type being used as a value: '{str(mykey)}': '{str(myvalue)}'"
             )
 
-        myvalue = os.environ.get(mykey, myvalue)
-        print(f"{mykey}={myvalue}")
+        if mykey in [
+            'P',
+            'PN',
+            'PV',
+            'PR',
+            'PVR',
+            'PF',
+            'A',
+            'CATEGORY',
+            'FILESDIR',
+            'WORKDIR'
+            'T',
+            'D',
+            'HOME',
+            'ROOT',
+            'DISTDIR',
+            'EPREFIX',
+            'ED',
+            'EROOT',
+            'BROOT',
+            'SYSROOT',
+            'ESYSROOT',
+            'MERGE_TYPE',
+            'REPLACING_VERSIONS',
+            'REPLACED_BY_VERSION'
+        ]:
+            myvalue = os.environ.get(f"PORTAGE_{mykey}", myvalue)
+            print(f"{mykey}={myvalue}")
 
         # Avoid potential UnicodeDecodeError exceptions later.
         mykey = _unicode_decode(mykey)
